@@ -11,11 +11,11 @@ resolve it into the actual file and lines.
 
 ## What it copies
 
-| Situation | Copied text |
-| --- | --- |
+| Situation                             | Copied text         |
+| ------------------------------------- | ------------------- |
 | Multi-line selection in `src/foo.txt` | `@src/foo.txt#1-39` |
-| Single line selected | `@src/foo.txt#5` |
-| No selection (just a cursor) | `@src/foo.txt` |
+| Single line selected                  | `@src/foo.txt#5`    |
+| No selection (just a cursor)          | `@src/foo.txt`      |
 
 Line numbers are 1-indexed to match the editor gutter. The `@` prefix, `#` path
 separator, and `-` range separator are fixed.
@@ -24,26 +24,26 @@ separator, and `-` range separator are fixed.
 
 - **Right-click** in the editor → **Copy as Mention**, or
 - **Keyboard shortcut**: `Cmd+Alt+C` (macOS) / `Ctrl+Alt+C` (Windows/Linux), or
-- **Command Palette** → *Copy as Mention*.
+- **Command Palette** → _Copy as Mention_.
 
 Then paste into your Claude Code terminal prompt.
 
 ## Settings
 
-| Setting | Default | Description |
-| --- | --- | --- |
-| `copyAsMention.pathStyle` | `relative` | `relative` (to workspace root), `fileName`, or `absolute`. |
-| `copyAsMention.showStatusBarMessage` | `true` | Show a brief confirmation in the status bar after copying. |
+| Setting                              | Default    | Description                                                |
+| ------------------------------------ | ---------- | ---------------------------------------------------------- |
+| `copyAsMention.pathStyle`            | `relative` | `relative` (to workspace root), `fileName`, or `absolute`. |
+| `copyAsMention.showStatusBarMessage` | `true`     | Show a brief confirmation in the status bar after copying. |
 
 ## Install
 
 The extension is automatically built from the latest commit on `main`.
 
-Download `copy-as-mention.vsix` from the [latest release](../../releases/latest),
-then run:
+Download `copy-as-mention.vsix` from the
+[latest release](../../releases/latest), then run:
 
 ```bash
 code --install-extension copy-as-mention.vsix
 ```
 
-(or Extensions panel → `…` → *Install from VSIX…*).
+(or Extensions panel → `…` → _Install from VSIX…_).

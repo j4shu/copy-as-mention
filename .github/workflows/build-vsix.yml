@@ -39,5 +39,6 @@ jobs:
         with:
           tag_name: latest
           name: Latest
+          body: Rolling build of the latest commit on `main`. Download `copy-as-mention.vsix` below.
           files: copy-as-mention.vsix
           make_latest: true

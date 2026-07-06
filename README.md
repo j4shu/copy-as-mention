@@ -22,18 +22,27 @@ separator, and `-` range separator are fixed.
 
 ## Usage
 
-- **Right-click** in the editor → **Copy as Mention**, or
-- **Keyboard shortcut**: `Cmd+Alt+C` (macOS) / `Ctrl+Alt+C` (Windows/Linux), or
-- **Command Palette** → _Copy as Mention_.
+There are three commands, one per path style:
+
+| Command                       | Copied path                              |
+| ----------------------------- | ---------------------------------------- |
+| **Copy as Mention: Relative** | Relative to the workspace root (default) |
+| **Copy as Mention: Filename** | Just the file name                       |
+| **Copy as Mention: Absolute** | Full absolute path                       |
+
+Run any of them via **right-click** in the editor or the **Command Palette**.
+
+Only **Relative** has a default keyboard shortcut:
+`Cmd+Alt+C` (macOS) / `Ctrl+Alt+C` (Windows/Linux). Bind the others yourself in
+_Preferences → Keyboard Shortcuts_ if you want.
 
 Then paste into your Claude Code terminal prompt.
 
 ## Settings
 
-| Setting                              | Default    | Description                                                |
-| ------------------------------------ | ---------- | ---------------------------------------------------------- |
-| `copyAsMention.pathStyle`            | `relative` | `relative` (to workspace root), `fileName`, or `absolute`. |
-| `copyAsMention.showStatusBarMessage` | `true`     | Show a brief confirmation in the status bar after copying. |
+| Setting                              | Default | Description                                                |
+| ------------------------------------ | ------- | ---------------------------------------------------------- |
+| `copyAsMention.showStatusBarMessage` | `true`  | Show a brief confirmation in the status bar after copying. |
 
 ## Install
 

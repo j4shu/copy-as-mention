@@ -12,7 +12,7 @@ const PATH_SEPARATOR = '#';
 const RANGE_SEPARATOR = '-';
 
 /**
- * Render the document's path according to the user's configured style.
+ * Render the document's path in the given style.
  */
 function renderPath(document: vscode.TextDocument, style: PathStyle): string {
   const fsPath = document.uri.fsPath;
@@ -60,31 +60,45 @@ function renderLineRange(selection: vscode.Selection): string {
   return startLine === endLine ? `${startLine}` : `${startLine}${RANGE_SEPARATOR}${endLine}`;
 }
 
+/**
+ * Copy the active file (and any selected line range) as an "@"-mention,
+ * rendering the path in the given style.
+ */
+async function copyAsMention(style: PathStyle): Promise<void> {
+  const editor = vscode.window.activeTextEditor;
+  if (!editor) {
+    void vscode.window.showWarningMessage('Copy as Mention: no active editor.');
+    return;
+  }
+
+  const showStatusBarMessage = vscode.workspace
+    .getConfiguration('copyAsMention')
+    .get<boolean>('showStatusBarMessage', true);
+
+  const renderedPath = renderPath(editor.document, style);
+  const range = renderLineRange(editor.selection);
+  const reference = `${MENTION_PREFIX}${renderedPath}`;
+  const text = range ? `${reference}${PATH_SEPARATOR}${range}` : reference;
+
+  await vscode.env.clipboard.writeText(text);
+
+  if (showStatusBarMessage) {
+    vscode.window.setStatusBarMessage(`Copied: ${text}`, 2000);
+  }
+}
+
 export function activate(context: vscode.ExtensionContext): void {
-  const disposable = vscode.commands.registerCommand('copyAsMention.copy', async () => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-      void vscode.window.showWarningMessage('Copy as Mention: no active editor.');
-      return;
-    }
+  const commands: Array<[string, PathStyle]> = [
+    ['copyAsMention.copyRelative', 'relative'],
+    ['copyAsMention.copyFileName', 'fileName'],
+    ['copyAsMention.copyAbsolute', 'absolute'],
+  ];
 
-    const config = vscode.workspace.getConfiguration('copyAsMention');
-    const pathStyle = config.get<PathStyle>('pathStyle', 'relative');
-    const showStatusBarMessage = config.get<boolean>('showStatusBarMessage', true);
-
-    const renderedPath = renderPath(editor.document, pathStyle);
-    const range = renderLineRange(editor.selection);
-    const reference = `${MENTION_PREFIX}${renderedPath}`;
-    const text = range ? `${reference}${PATH_SEPARATOR}${range}` : reference;
-
-    await vscode.env.clipboard.writeText(text);
-
-    if (showStatusBarMessage) {
-      vscode.window.setStatusBarMessage(`Copied: ${text}`, 2000);
-    }
-  });
-
-  context.subscriptions.push(disposable);
+  for (const [commandId, style] of commands) {
+    context.subscriptions.push(
+      vscode.commands.registerCommand(commandId, () => copyAsMention(style)),
+    );
+  }
 }
 
 export function deactivate(): void {

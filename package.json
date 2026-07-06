@@ -26,15 +26,35 @@
   "contributes": {
     "commands": [
       {
-        "command": "copyAsMention.copy",
-        "title": "Copy as Mention",
+        "command": "copyAsMention.copyRelative",
+        "title": "Copy as Mention: Relative",
+        "category": ""
+      },
+      {
+        "command": "copyAsMention.copyFileName",
+        "title": "Copy as Mention: Filename",
+        "category": ""
+      },
+      {
+        "command": "copyAsMention.copyAbsolute",
+        "title": "Copy as Mention: Absolute",
         "category": ""
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "copyAsMention.copy",
+          "command": "copyAsMention.copyRelative",
+          "when": "editorTextFocus",
+          "group": "9_cutcopypaste"
+        },
+        {
+          "command": "copyAsMention.copyFileName",
+          "when": "editorTextFocus",
+          "group": "9_cutcopypaste"
+        },
+        {
+          "command": "copyAsMention.copyAbsolute",
           "when": "editorTextFocus",
           "group": "9_cutcopypaste"
         }
@@ -42,7 +62,7 @@
     },
     "keybindings": [
       {
-        "command": "copyAsMention.copy",
+        "command": "copyAsMention.copyRelative",
         "key": "ctrl+alt+c",
         "mac": "cmd+alt+c",
         "when": "editorTextFocus"
@@ -51,21 +71,6 @@
     "configuration": {
       "title": "Copy as Mention",
       "properties": {
-        "copyAsMention.pathStyle": {
-          "type": "string",
-          "enum": [
-            "fileName",
-            "relative",
-            "absolute"
-          ],
-          "enumDescriptions": [
-            "Just the file name, e.g. foo.txt",
-            "Path relative to the workspace root, e.g. src/foo.txt",
-            "Full absolute path"
-          ],
-          "default": "relative",
-          "description": "How the file path is rendered in the copied text."
-        },
         "copyAsMention.showStatusBarMessage": {
           "type": "boolean",
           "default": true,

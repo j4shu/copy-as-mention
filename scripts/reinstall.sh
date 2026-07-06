@@ -8,6 +8,7 @@
 #   ./scripts/reinstall.sh          # build + reinstall
 #   ./scripts/reinstall.sh --reload # also reopen the workspace window when done
 #
+# Override the editor CLI with CODE_BIN=/path/to/code if 'code' isn't on PATH.
 set -euo pipefail
 
 # Resolve repo root (parent of this script's dir) so it works from anywhere.
@@ -23,19 +24,12 @@ VSIX="${NAME}-${VERSION}.vsix"
 
 echo "==> Extension: ${EXT_ID} (v${VERSION})"
 
-# Pick a VS Code CLI: prefer 'code', fall back to 'cursor'. Override with CODE_BIN.
-CODE_BIN="${CODE_BIN:-}"
-if [[ -z "${CODE_BIN}" ]]; then
-  if command -v code >/dev/null 2>&1; then
-    CODE_BIN="code"
-  elif command -v cursor >/dev/null 2>&1; then
-    CODE_BIN="cursor"
-  else
-    echo "ERROR: no 'code' or 'cursor' CLI on PATH." >&2
-    echo "  In VS Code: Cmd+Shift+P -> 'Shell Command: Install code command in PATH'." >&2
-    echo "  Or set CODE_BIN=/path/to/code and re-run." >&2
-    exit 1
-  fi
+CODE_BIN="${CODE_BIN:-code}"
+if ! command -v "${CODE_BIN}" >/dev/null 2>&1; then
+  echo "ERROR: '${CODE_BIN}' CLI not on PATH." >&2
+  echo "  In VS Code: Cmd+Shift+P -> 'Shell Command: Install code command in PATH'." >&2
+  echo "  Or set CODE_BIN=/path/to/code and re-run." >&2
+  exit 1
 fi
 
 # Ensure the packaging tool is available (prefer a local devDep, else npx).

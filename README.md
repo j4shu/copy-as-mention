@@ -35,20 +35,15 @@ Then paste into your Claude Code terminal prompt.
 | `copyAsMention.pathStyle` | `relative` | `relative` (to workspace root), `fileName`, or `absolute`. |
 | `copyAsMention.showStatusBarMessage` | `true` | Show a brief confirmation in the status bar after copying. |
 
-## Development
+## Install
+
+The extension is automatically built from the latest commit on `main`.
+
+Download `copy-as-mention.vsix` from the [latest release](../../releases/latest),
+then run:
 
 ```bash
-npm install       # install dev dependencies
-npm run compile   # type-check + build to out/
-# Press F5 in VS Code to launch the Extension Development Host
+code --install-extension copy-as-mention.vsix
 ```
 
-### Package a .vsix
-
-```bash
-npm install -g @vscode/vsce
-npm run package
-```
-
-Then install via the Extensions panel → "…" → **Install from VSIX**, or
-`code --install-extension copy-as-mention-0.0.1.vsix`.
+(or Extensions panel → `…` → *Install from VSIX…*).

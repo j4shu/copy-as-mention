@@ -44,8 +44,9 @@ npm run compile
 
 echo "==> Packaging ${VSIX}"
 rm -f "${VSIX}"
-# --allow-missing-repository keeps packaging from failing on this minimal manifest.
-${VSCE} package --allow-missing-repository
+# Skip the repository/license prompts so local packaging never blocks on
+# publishing requirements.
+${VSCE} package --allow-missing-repository --skip-license
 
 echo "==> Uninstalling previous ${EXT_ID} (ignored if not installed)"
 "${CODE_BIN}" --uninstall-extension "${EXT_ID}" >/dev/null 2>&1 || true

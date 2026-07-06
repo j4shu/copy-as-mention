@@ -5,14 +5,14 @@
 # previously installed copy, then installs the new one.
 #
 # Usage:
-#   ./scripts/reinstall.sh          # build + reinstall
-#   ./scripts/reinstall.sh --reload # also reopen the workspace window when done
+#   ./build.sh          # build + reinstall
+#   ./build.sh --reload # also reopen the workspace window when done
 #
 # Override the editor CLI with CODE_BIN=/path/to/code if 'code' isn't on PATH.
 set -euo pipefail
 
-# Resolve repo root (parent of this script's dir) so it works from anywhere.
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Resolve repo root (this script's dir) so it works from anywhere.
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
 # Read name/version/publisher from package.json without extra tooling.

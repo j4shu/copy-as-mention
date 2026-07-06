@@ -29,6 +29,11 @@ jobs:
           npm install -g @vscode/vsce
           vsce package --allow-missing-repository --out copy-as-mention.vsix
 
+      - name: Delete previous rolling release
+        run: gh release delete latest --yes --cleanup-tag || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish rolling release
         uses: softprops/action-gh-release@v2
         with:

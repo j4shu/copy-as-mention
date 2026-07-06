@@ -2,11 +2,8 @@
 #
 # Rebuild, repackage, and reinstall the extension into your local VS Code.
 # Run this between iterations: it compiles, produces a fresh .vsix, removes any
-# previously installed copy, then installs the new one.
-#
-# Usage:
-#   ./build.sh          # build + reinstall
-#   ./build.sh --reload # also reopen the workspace window when done
+# previously installed copy, then installs the new one. Reload VS Code yourself
+# afterwards ('Developer: Reload Window') to pick up the change.
 #
 # Override the editor CLI with CODE_BIN=/path/to/code if 'code' isn't on PATH.
 set -euo pipefail
@@ -47,8 +44,9 @@ npm run compile
 
 echo "==> Packaging ${VSIX}"
 rm -f "${VSIX}"
-# --allow-missing-repository keeps packaging from failing on this minimal manifest.
-${VSCE} package --allow-missing-repository
+# Skip the repository/license prompts so local packaging never blocks on
+# publishing requirements.
+${VSCE} package --allow-missing-repository --skip-license
 
 echo "==> Uninstalling previous ${EXT_ID} (ignored if not installed)"
 "${CODE_BIN}" --uninstall-extension "${EXT_ID}" >/dev/null 2>&1 || true
@@ -56,9 +54,4 @@ echo "==> Uninstalling previous ${EXT_ID} (ignored if not installed)"
 echo "==> Installing ${VSIX}"
 "${CODE_BIN}" --install-extension "${VSIX}" --force
 
-if [[ "${1:-}" == "--reload" ]]; then
-  echo "==> Reopening ${ROOT} in the current ${CODE_BIN} window"
-  "${CODE_BIN}" --reuse-window "${ROOT}" >/dev/null 2>&1 || true
-fi
-
-echo "==> Done. If the change isn't live, run 'Developer: Reload Window' in VS Code."
+echo "==> Done. Run 'Developer: Reload Window' in VS Code to pick up the change."

@@ -1,0 +1,88 @@
+{
+  "name": "copy-as-mention",
+  "displayName": "Copy as Mention",
+  "description": "Copy the active file and selected lines as a Claude Code @-mention (e.g. \"@src/foo.txt#1-39\") to the clipboard.",
+  "version": "0.0.1",
+  "publisher": "jshu",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "copy",
+    "clipboard",
+    "context",
+    "line numbers",
+    "reference"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "copyAsMention.copy",
+        "title": "Copy as Mention",
+        "category": ""
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "copyAsMention.copy",
+          "when": "editorTextFocus",
+          "group": "9_cutcopypaste"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "copyAsMention.copy",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "Copy as Mention",
+      "properties": {
+        "copyAsMention.pathStyle": {
+          "type": "string",
+          "enum": [
+            "fileName",
+            "relative",
+            "absolute"
+          ],
+          "enumDescriptions": [
+            "Just the file name, e.g. foo.txt",
+            "Path relative to the workspace root, e.g. src/foo.txt",
+            "Full absolute path"
+          ],
+          "default": "relative",
+          "description": "How the file path is rendered in the copied text."
+        },
+        "copyAsMention.showStatusBarMessage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a brief status bar confirmation after copying."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.0"
+  }
+}

@@ -11,11 +11,11 @@ resolve it into the actual file and lines.
 
 ## What it copies
 
-| Situation | Copied text |
-| --- | --- |
+| Situation                             | Copied text         |
+| ------------------------------------- | ------------------- |
 | Multi-line selection in `src/foo.txt` | `@src/foo.txt#1-39` |
-| Single line selected | `@src/foo.txt#5` |
-| No selection (just a cursor) | `@src/foo.txt` |
+| Single line selected                  | `@src/foo.txt#5`    |
+| No selection (just a cursor)          | `@src/foo.txt`      |
 
 Line numbers are 1-indexed to match the editor gutter. The `@` prefix, `#` path
 separator, and `-` range separator are fixed.
@@ -24,31 +24,26 @@ separator, and `-` range separator are fixed.
 
 - **Right-click** in the editor → **Copy as Mention**, or
 - **Keyboard shortcut**: `Cmd+Alt+C` (macOS) / `Ctrl+Alt+C` (Windows/Linux), or
-- **Command Palette** → *Copy as Mention*.
+- **Command Palette** → _Copy as Mention_.
 
 Then paste into your Claude Code terminal prompt.
 
 ## Settings
 
-| Setting | Default | Description |
-| --- | --- | --- |
-| `copyAsMention.pathStyle` | `relative` | `relative` (to workspace root), `fileName`, or `absolute`. |
-| `copyAsMention.showStatusBarMessage` | `true` | Show a brief confirmation in the status bar after copying. |
+| Setting                              | Default    | Description                                                |
+| ------------------------------------ | ---------- | ---------------------------------------------------------- |
+| `copyAsMention.pathStyle`            | `relative` | `relative` (to workspace root), `fileName`, or `absolute`. |
+| `copyAsMention.showStatusBarMessage` | `true`     | Show a brief confirmation in the status bar after copying. |
 
-## Development
+## Install
 
-```bash
-npm install       # install dev dependencies
-npm run compile   # type-check + build to out/
-# Press F5 in VS Code to launch the Extension Development Host
-```
+The extension is automatically built from the latest commit on `main`.
 
-### Package a .vsix
+Download `copy-as-mention.vsix` from the
+[latest release](../../releases/latest), then run:
 
 ```bash
-npm install -g @vscode/vsce
-npm run package
+code --install-extension copy-as-mention.vsix
 ```
 
-Then install via the Extensions panel → "…" → **Install from VSIX**, or
-`code --install-extension copy-as-mention-0.0.1.vsix`.
+(or Extensions panel → `…` → _Install from VSIX…_).

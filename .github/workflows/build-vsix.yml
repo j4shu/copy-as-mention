@@ -1,0 +1,44 @@
+name: Build VSIX
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Package extension
+        run: |
+          npm install -g @vscode/vsce
+          vsce package --allow-missing-repository --out copy-as-mention.vsix
+
+      - name: Publish rolling release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest build
+          body: |
+            Automatically built from the latest commit on `main`.
+
+            **Install:** download `copy-as-mention.vsix` below, then run
+            `code --install-extension copy-as-mention.vsix`
+            (or Extensions panel → `…` → *Install from VSIX…*).
+          files: copy-as-mention.vsix
+          make_latest: true

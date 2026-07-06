@@ -3,7 +3,7 @@
   "displayName": "Copy as Mention",
   "description": "Copy the active file and selected lines as a Claude Code @-mention (e.g. \"@src/foo.txt#1-39\") to the clipboard.",
   "version": "0.0.1",
-  "publisher": "jshu",
+  "publisher": "j4shu",
   "engines": {
     "vscode": "^1.85.0"
   },

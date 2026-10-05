@@ -3,17 +3,6 @@ import * as vscode from 'vscode';
 
 type PathStyle = 'fileName' | 'relative' | 'absolute';
 
-// Fixed, non-configurable format that mirrors the Claude Code VS Code
-// "@"-mention syntax: "@<path>#<start>-<end>" (e.g. "@src/foo.txt#1-39").
-// The "@" lets Claude Code resolve it into the actual file/lines; "#" precedes
-// the range, and a dash separates the line numbers.
-const MENTION_PREFIX = '@';
-const PATH_SEPARATOR = '#';
-const RANGE_SEPARATOR = '-';
-
-/**
- * Render the document's path in the given style.
- */
 function renderPath(document: vscode.TextDocument, style: PathStyle): string {
   const fsPath = document.uri.fsPath;
 
@@ -35,13 +24,7 @@ function renderPath(document: vscode.TextDocument, style: PathStyle): string {
   }
 }
 
-/**
- * Build the line-range suffix for a selection.
- *
- * VS Code positions are 0-indexed, so we add 1 to match the gutter.
- * A single line yields "5"; a multi-line range yields "1-39".
- * Returns an empty string when the selection is just a cursor (empty).
- */
+// VS Code lines are 0-indexed; add 1 to match the gutter.
 function renderLineRange(selection: vscode.Selection): string {
   if (selection.isEmpty) {
     return '';
@@ -57,13 +40,9 @@ function renderLineRange(selection: vscode.Selection): string {
     endLine -= 1;
   }
 
-  return startLine === endLine ? `${startLine}` : `${startLine}${RANGE_SEPARATOR}${endLine}`;
+  return startLine === endLine ? `${startLine}` : `${startLine}-${endLine}`;
 }
 
-/**
- * Copy the active file (and any selected line range) as an "@"-mention,
- * rendering the path in the given style.
- */
 async function copyAsMention(style: PathStyle): Promise<void> {
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
@@ -71,20 +50,11 @@ async function copyAsMention(style: PathStyle): Promise<void> {
     return;
   }
 
-  const showStatusBarMessage = vscode.workspace
-    .getConfiguration('copyAsMention')
-    .get<boolean>('showStatusBarMessage', true);
-
-  const renderedPath = renderPath(editor.document, style);
   const range = renderLineRange(editor.selection);
-  const reference = `${MENTION_PREFIX}${renderedPath}`;
-  const text = range ? `${reference}${PATH_SEPARATOR}${range}` : reference;
+  const text = `@${renderPath(editor.document, style)}${range && `#${range}`}`;
 
   await vscode.env.clipboard.writeText(text);
-
-  if (showStatusBarMessage) {
-    vscode.window.setStatusBarMessage(`Copied: ${text}`, 2000);
-  }
+  vscode.window.setStatusBarMessage(`Copied: ${text}`, 2000);
 }
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -99,8 +69,4 @@ export function activate(context: vscode.ExtensionContext): void {
       vscode.commands.registerCommand(commandId, () => copyAsMention(style)),
     );
   }
-}
-
-export function deactivate(): void {
-  // No cleanup required.
 }

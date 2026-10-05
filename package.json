@@ -27,18 +27,15 @@
     "commands": [
       {
         "command": "copyAsMention.copyRelative",
-        "title": "Copy as Mention: Relative",
-        "category": ""
+        "title": "Copy as Mention: Relative"
       },
       {
         "command": "copyAsMention.copyFileName",
-        "title": "Copy as Mention: Filename",
-        "category": ""
+        "title": "Copy as Mention: Filename"
       },
       {
         "command": "copyAsMention.copyAbsolute",
-        "title": "Copy as Mention: Absolute",
-        "category": ""
+        "title": "Copy as Mention: Absolute"
       }
     ],
     "menus": {
@@ -59,24 +56,6 @@
           "group": "9_cutcopypaste"
         }
       ]
-    },
-    "keybindings": [
-      {
-        "command": "copyAsMention.copyRelative",
-        "key": "ctrl+alt+c",
-        "mac": "cmd+alt+c",
-        "when": "editorTextFocus"
-      }
-    ],
-    "configuration": {
-      "title": "Copy as Mention",
-      "properties": {
-        "copyAsMention.showStatusBarMessage": {
-          "type": "boolean",
-          "default": true,
-          "description": "Show a brief status bar confirmation after copying."
-        }
-      }
     }
   },
   "scripts": {
@@ -91,6 +70,7 @@
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
+    "@vscode/vsce": "^4.0.0",
     "eslint": "^8.56.0",
     "typescript": "^5.3.0"
   }

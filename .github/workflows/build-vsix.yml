@@ -25,9 +25,7 @@ jobs:
         run: npm ci
 
       - name: Package extension
-        run: |
-          npm install -g @vscode/vsce
-          vsce package --allow-missing-repository --out copy-as-mention.vsix
+        run: npx vsce package --allow-missing-repository --out copy-as-mention.vsix
 
       - name: Delete previous rolling release
         run: gh release delete latest --yes --cleanup-tag || true
